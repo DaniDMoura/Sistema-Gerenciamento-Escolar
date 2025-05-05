@@ -116,7 +116,7 @@ class Disciplinas:
     nome: Mapped[str] = mapped_column(index=True)
     descricao: Mapped[str]
     carga_horaria: Mapped[int]
-    nivel: Mapped[str]
+    nivel: Mapped[str] = mapped_column(index=True)
     area_conhecimento: Mapped[str]
     obrigatoria: Mapped[bool]
 
