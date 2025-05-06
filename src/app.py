@@ -11,19 +11,16 @@ from src.routes import (
     turmas_crud,
 )
 
-origins = [
-    "http://localhost:5173",
-    "http://localhost:8000"
-]
+origins = ['http://localhost:5173', 'http://localhost:8000']
 
 app = FastAPI()
 
 app.add_middleware(
-  CORSMiddleware,
-  allow_origins=origins,
-  allow_credentials=True,
-  allow_methods=["*"],
-  allow_headers=["*"],
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
 )
 
 app.include_router(alocacoes_crud.router, prefix='/api')

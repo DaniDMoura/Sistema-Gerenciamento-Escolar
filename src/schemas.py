@@ -1,6 +1,23 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date, datetime
 from typing import Optional
+from enum import Enum
+
+
+class StatusEnum(str, Enum):
+    ativo = 'ativo'
+    inativo = 'inativo'
+    concluido = 'concluido'
+    pendente = 'pendente'
+    expulso = 'expulso'
+    falecido = 'falecido'
+    transferido = 'transferido'
+
+
+class SexoEnum(str, Enum):
+    masculino = 'masculino'
+    feminino = 'feminino'
+    outro = 'outro'
 
 
 class AlunoSchema(BaseModel):
@@ -8,22 +25,48 @@ class AlunoSchema(BaseModel):
     nome: str
     sobrenome: str
     data_nascimento: date
-    sexo: str
+    sexo: SexoEnum
     cpf: str
     rg: str
     endereco: str
     cep: str
     email: EmailStr
     telefone: str
+    status: Optional[StatusEnum] = StatusEnum.ativo
     foto: Optional[str]
-    status: str
     necessidades: Optional[str]
     grupo_sanguineo: Optional[str]
     medicamentos: Optional[str]
     id_responsavel: Optional[int]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class AlunoSchemaList(BaseModel):
+    Alunos: list[AlunoSchema]
+
+
+class CriarAlunosSchema(BaseModel):
+    nome: str
+    sobrenome: str
+    data_nascimento: date
+    sexo: SexoEnum
+    cpf: str
+    rg: str
+    endereco: str
+    cep: str
+    email: EmailStr
+    telefone: str
+    status: Optional[StatusEnum] = StatusEnum.ativo
+    foto: Optional[str] = 'https://placehold.co/200x200'
+    necessidades: Optional[str] = 'Não especificado'
+    grupo_sanguineo: Optional[str] = 'Não especificado'
+    medicamentos: Optional[str] = 'Nenhum medicamento'
+    id_responsavel: Optional[int]
+
+    class Config:
+        from_attributes = True
 
 
 class ResponsavelSchema(BaseModel):
@@ -39,7 +82,27 @@ class ResponsavelSchema(BaseModel):
     autorizado_buscar: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class CriarResponsavelSchema(BaseModel):
+    nome: str
+    sobrenome: str
+    parentesco: Optional[str]
+    cpf: str
+    rg: str
+    endereco: str
+    cep: str
+    email: str
+    telefone: str
+    autorizado_buscar: bool
+
+    class Config:
+        from_attributes = True
+
+
+class ResponsavelSchemaList(BaseModel):
+    Responsaveis: list[ResponsavelSchema]
 
 
 class ProfessorSchema(BaseModel):
@@ -61,7 +124,7 @@ class ProfessorSchema(BaseModel):
     foto: Optional[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class TurmaSchema(BaseModel):
@@ -75,7 +138,7 @@ class TurmaSchema(BaseModel):
     status: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class DisciplinaSchema(BaseModel):
@@ -87,7 +150,7 @@ class DisciplinaSchema(BaseModel):
     obrigatoria: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class AlocacaoSchema(BaseModel):
@@ -97,7 +160,7 @@ class AlocacaoSchema(BaseModel):
     id_turma: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class NotaSchema(BaseModel):
@@ -109,7 +172,7 @@ class NotaSchema(BaseModel):
     data_lancamento: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class FrequenciaSchema(BaseModel):
@@ -120,4 +183,9 @@ class FrequenciaSchema(BaseModel):
     presente: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class FilterPage(BaseModel):
+    offset: int = 0
+    limit: int = 100

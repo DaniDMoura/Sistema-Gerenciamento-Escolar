@@ -14,8 +14,8 @@ class Alunos:
     sobrenome: Mapped[str] = mapped_column(index=True)
     data_nascimento: Mapped[date]
     sexo: Mapped[str]
-    cpf: Mapped[str]
-    rg: Mapped[str]
+    cpf: Mapped[str] = mapped_column(unique=True)
+    rg: Mapped[str] = mapped_column(unique=True)
     endereco: Mapped[str]
     cep: Mapped[str]
     email: Mapped[str] = mapped_column(index=True)
@@ -27,7 +27,7 @@ class Alunos:
     medicamentos: Mapped[str] = mapped_column(nullable=True)
 
     id_responsavel: Mapped[int] = mapped_column(
-        ForeignKey('Responsaveis.id_responsavel')
+        ForeignKey('Responsaveis.id_responsavel'), nullable=True
     )
     responsavel: Mapped['Responsaveis'] = relationship(
         init=False, back_populates='alunos'
