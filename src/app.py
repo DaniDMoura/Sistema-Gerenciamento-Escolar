@@ -13,6 +13,7 @@ from src.routes import (
 
 origins = [
     "http://localhost:5173",
+    "http://localhost:8000"
 ]
 
 app = FastAPI()
@@ -25,11 +26,11 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-app.include_router(alocacoes_crud.router, prefix='/alocacoes')
-app.include_router(alunos_crud.router, prefix='/alunos')
-app.include_router(disciplinas_crud.router, prefix='/disciplinas')
-app.include_router(frequencias_crud.router, prefix='/frequencias')
-app.include_router(notas_crud.router, prefix='/notas')
-app.include_router(professores_crud.router, prefix='/professores')
-app.include_router(turmas_crud.router, prefix='/turmas')
-app.include_router(responsaveis_crud.router, prefix='/responsaveis')
+app.include_router(alocacoes_crud.router, prefix='/api')
+app.include_router(alunos_crud.router, prefix='/api')
+app.include_router(disciplinas_crud.router, prefix='/api')
+app.include_router(frequencias_crud.router, prefix='/api')
+app.include_router(notas_crud.router, prefix='/api')
+app.include_router(professores_crud.router, prefix='/api')
+app.include_router(turmas_crud.router, prefix='/api')
+app.include_router(responsaveis_crud.router, prefix='/api')
