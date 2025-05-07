@@ -14,7 +14,7 @@ db_session = Annotated[AsyncSession, Depends(get_session)]
 
 
 @router.get('/', response_model=AlunoSchemaList, status_code=HTTPStatus.OK)
-async def get_alocacao(
+async def get_alunos(
     session: db_session, filter_users: Annotated[FilterPage, Query()]
 ):
     query = await session.scalars(

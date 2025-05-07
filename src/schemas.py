@@ -4,7 +4,7 @@ from typing import Optional
 from enum import Enum
 
 
-class StatusEnum(str, Enum):
+class AlunosStatusEnum(str, Enum):
     ativo = 'ativo'
     inativo = 'inativo'
     concluido = 'concluido'
@@ -14,10 +14,29 @@ class StatusEnum(str, Enum):
     transferido = 'transferido'
 
 
+class TurmaStatusEnum(str, Enum):
+    ativo = 'ativo'
+    inativo = 'inativo'
+
+
 class SexoEnum(str, Enum):
     masculino = 'masculino'
     feminino = 'feminino'
     outro = 'outro'
+
+
+class NivelEnum(str, Enum):
+    ensino_medio = 'Ensino Médio'
+    ensino_fundamental_um = 'Ensino Fundamental I'
+    ensino_fundamental_dois = 'Ensino Fundamental II'
+    pre_escola = 'Pré Escola'
+
+
+class AreaConhecimentoEnum(str, Enum):
+    ciencias_humanas = 'Ciências Humanas'
+    linguagens = 'Linguagens'
+    matematica = 'Matemática'
+    ciencias_natureza = 'Ciências da Natureza'
 
 
 class AlunoSchema(BaseModel):
@@ -32,7 +51,7 @@ class AlunoSchema(BaseModel):
     cep: str
     email: EmailStr
     telefone: str
-    status: Optional[StatusEnum] = StatusEnum.ativo
+    status: Optional[AlunosStatusEnum] = AlunosStatusEnum.ativo
     foto: Optional[str]
     necessidades: Optional[str]
     grupo_sanguineo: Optional[str]
@@ -58,7 +77,7 @@ class CriarAlunosSchema(BaseModel):
     cep: str
     email: EmailStr
     telefone: str
-    status: Optional[StatusEnum] = StatusEnum.ativo
+    status: Optional[AlunosStatusEnum] = AlunosStatusEnum.ativo
     foto: Optional[str] = 'https://placehold.co/200x200'
     necessidades: Optional[str] = 'Não especificado'
     grupo_sanguineo: Optional[str] = 'Não especificado'
@@ -135,7 +154,24 @@ class TurmaSchema(BaseModel):
     nivel: str
     turno: str
     capacidade_maxima: Optional[int]
-    status: str
+    status: TurmaStatusEnum = TurmaStatusEnum.ativo
+
+    class Config:
+        from_attributes = True
+
+
+class TurmaSchemaList(BaseModel):
+    Turmas: list[TurmaSchema]
+
+
+class CriarTurmaSchema(BaseModel):
+    ano_letivo: int
+    nome: str
+    serie: str
+    nivel: str
+    turno: str
+    capacidade_maxima: Optional[int]
+    status: TurmaStatusEnum = TurmaStatusEnum.ativo
 
     class Config:
         from_attributes = True
@@ -146,7 +182,31 @@ class DisciplinaSchema(BaseModel):
     nome: str
     descricao: str
     carga_horaria: int
-    area_conhecimento: str
+    nivel: NivelEnum = NivelEnum.ensino_medio
+    area_conhecimento: AreaConhecimentoEnum = (
+        AreaConhecimentoEnum.ciencias_humanas
+    )
+    obrigatoria: bool
+
+    class Config:
+        from_attributes = True
+
+
+class DisciplinaSchemaList(BaseModel):
+    Disciplinas: list[DisciplinaSchema]
+
+    class Config:
+        from_attributes = True
+
+
+class CriarDisciplinaSchema(BaseModel):
+    nome: str
+    descricao: str
+    carga_horaria: int
+    nivel: NivelEnum = NivelEnum.ensino_medio
+    area_conhecimento: AreaConhecimentoEnum = (
+        AreaConhecimentoEnum.ciencias_humanas
+    )
     obrigatoria: bool
 
     class Config:
